@@ -4,7 +4,7 @@ import time
 
 
 def merge_sort(list_to_sort: List[int]) -> List[int]:
-    if not list_to_sort or len(list_to_sort) == 1:
+    if len(list_to_sort) <= 1:
         return list_to_sort
     elif len(list_to_sort) == 2:
         if list_to_sort[0] > list_to_sort[1]:
@@ -53,7 +53,7 @@ if __name__ == '__main__':
     assert merge_lists([1, 3, 5], [2, 4]) == [1, 2, 3, 4, 5]
     assert merge_sort([2, 3, 5, 1, 6]) == [1, 2, 3, 5, 6]
 
-    large_list = list(range(999))
+    large_list = list(range(9999))
     large_list_copy = large_list.copy()
     random.shuffle(large_list_copy)
     start = time.time()
@@ -62,4 +62,8 @@ if __name__ == '__main__':
     start = time.time()
     assert insertionSort(large_list_copy) == large_list
     print('insertion_sort', time.time() - start)
+    start = time.time()
+    assert sorted(large_list_copy) == large_list
+    print('tim_sort', time.time() - start)
+
 

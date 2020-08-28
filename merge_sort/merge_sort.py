@@ -1,6 +1,5 @@
 from typing import List
 import random
-import time
 
 
 def merge_sort(list_to_sort: List[int]) -> List[int]:
@@ -48,22 +47,7 @@ def insertionSort(arr):
     return arr
 
 if __name__ == '__main__':
-    assert merge_lists([1, 3, 5], [2, 4, 6]) == [1, 2, 3, 4, 5, 6]
-    assert merge_lists([1, 2], [1, 2]) == [1, 1, 2, 2]
-    assert merge_lists([1, 3, 5], [2, 4]) == [1, 2, 3, 4, 5]
-    assert merge_sort([2, 3, 5, 1, 6]) == [1, 2, 3, 5, 6]
-
-    large_list = list(range(9999))
+    large_list = list(range(10_000))
     large_list_copy = large_list.copy()
     random.shuffle(large_list_copy)
-    start = time.time()
-    assert merge_sort(large_list_copy) == large_list
-    print('merge_sort', time.time() - start)
-    start = time.time()
-    assert insertionSort(large_list_copy) == large_list
-    print('insertion_sort', time.time() - start)
-    start = time.time()
-    assert sorted(large_list_copy) == large_list
-    print('tim_sort', time.time() - start)
-
-
+    merge_sort(large_list_copy)

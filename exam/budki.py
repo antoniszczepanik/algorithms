@@ -4,7 +4,7 @@
 # maksymalnie 15 budek w pasie o szerokości 100 (n)
 
 from collections import namedtuple
-from random import sample, choices
+from random import choices
 
 Node = namedtuple('Node', ('n', 'm', 'r'))
 
@@ -40,7 +40,7 @@ def get_number_of_connections(nodes):
     # zlicz unikalnych "najstarszych przodków"
     unique = set()
     for root in roots:
-        if root not in set():
+        if root not in unique:
             unique.add(root)
 
     return len(unique) - 1
@@ -52,10 +52,10 @@ def calculate_distance(node_1, node_2):
 
 if __name__ == '__main__':
     # dane testowe
-    l = 1000
+    l = 100000
     ns = choices(range(1, 1000), k=l)
     ms = choices(range(1, 1000), k=l)
-    rs = choices(range(1, 1000), k=l)
-    nodes = [Node(n, m, r) for n, m, r, in zip(ns, ms, [50 for x in range(l)])]
+    rs = [50 for x in range(l)]
+    nodes = [Node(n, m, r) for n, m, r, in zip(ns, ms, rs)]
 
     print(get_number_of_connections(nodes))

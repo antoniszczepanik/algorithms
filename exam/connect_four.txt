@@ -1,0 +1,25 @@
+Connect Fours
+
+Informacje ogólne:
+  - gra została policzona (wiadomo, że rozpoczynający wygrywa przy idealnej grze)
+  - 7 gałęzi w każdym ruchu -> n^7 ewaluacji dla każdego ruchu
+  - w praktyce wykorzystanie możliwe jest wykorzystanie algorytmu min/max
+
+Proponowane heurystyki:
+
+1. Jeżeli na planszy jest ruch wygrywający wykonaj go.
+2. Jeżeli na planszy jest ruch przegrywający zablokuj go.
+  - w przypadku ewaluacji algorytmu min max takie wierzchołki są liśćmi drzewa
+  - możemy przypisać mu wartość +inf/-inf
+
+2. Zsumuj liczbę możliwych pozycji wygrywających (+1) i przegrywających (-1):
+  - pomiń pozycje wygrywającą jeżeli ma pod sobą inną pozycję wygrywająca
+    - taka nie będzie mogła być wykorzystana
+  Wybierz ruch z największą wartością
+
+3. Zaczynając zawsze wybieraj środek
+
+4. EndGame (dokładniej opisać):
+  Przy założeniu, że gra będzie prowadzona na wysokim poziomie skończywy z pionowymi blokami.
+  - czy jesteśmy w stanie jakoś dyktować to ustawienie?
+  - jaką rolę grają tutaj wiersze parzyste i nieparzyste?

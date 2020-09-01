@@ -11,11 +11,13 @@ Node = namedtuple('Node', ('n', 'm', 'r'))
 
 def get_number_of_connections(nodes):
     adj_list = {}
-    for node in nodes:
-        adj_list[node] = []
+    # informacja o "najstarszym przodku" każdej budki (początkowo każda
+    # wskazuje na siebie)
+    roots = list(range(len(nodes)))
 
     # posortuj budki względem pierwszej współrzędnej
-    nodes_sorted = sorted(nodes) # (n log(n))
+    nodes_sorted = sorted(nodes) # n log(n)
+
     for i, current_node in enumerate(nodes_sorted):
         # możemy spokojnie patrzeć tylko na 15 kolejnych budek - jeżeli na
         # odcinku o dł. 100 jest ich maksymalnie 15 to nie musimy sprawdzać
@@ -27,40 +29,49 @@ def get_number_of_connections(nodes):
             next_nodes = nodes_sorted[i+1:i+16]
             assert len(next_nodes) == 15
 
-        for next_node in next_nodes:
+        for j, next_node in enumerate(next_nodes):
             # najwięcej 15 O(n), więc nadal liniowo
-            if calculate_distance(current_node, next_node) < min(next_node.r, current_node.r):
-                # możemy połączyć obydwa node'y na grafie
-                adj_list[current_node].append(next_node)
+            next_node_ix = i + j + 1
+            # pomiń jeżeli mają wspólnego przodka (już są połączone)
+            if roots[next_node_ix] != roots[i]:
+                if calculate_distance(current_node, next_node) < min(next_node.r, current_node.r):
+                    # zapisujemy wiadomość o "najstarszym przodku"
+                    roots[next_node_ix] = roots[i]
 
-    return get_number_of_connected_components(adj_list) - 1
+    # zlicz unikalnych "najstarszych przodków"
+    unique = set()
+    for root in roots:
+        if root not in set():
+            unique.add(root)
+
+    return len(unique) - 1
 
 
 def calculate_distance(node_1, node_2):
-    return ((node_1.n - node_2.n)**2 + (node_1.m - node_2.n)**2) ** (1/2)
+    return ((node_1.n - node_2.n)**2 + (node_1.m - node_2.m)**2) ** (1/2)
 
-
-def get_number_of_connected_components(adjacency_list):
-    # bfs zliczający liczbę połączonych komponentów
-    queue = []
-    # sprawdzaj czy dany node był już odwiedzony
-    visited = {}
-    for node in adjacency_list:
-        visited[node] = False
-
-    number_of_components = 0
-    for node in adjacency_list:
-        if not visited[node]:
-            queue.append(node)
-            number_of_components += 1
-            while queue:
-                current_node = queue.pop(0)
-                visited[current_node] = True
-                for adjacent_node in adjacency_list[current_node]:
-                    if not visited[adjacent_node]:
-                        queue.append(adjacent_node)
-
-    return number_of_components
+#
+#def get_number_of_connected_components(adjacency_list):
+#    # bfs zliczający liczbę połączonych komponentów
+#    queue = []
+#    # sprawdzaj czy dany node był już odwiedzony
+#    visited = {}
+#    for node in adjacency_list:
+#        visited[node] = False
+#
+#    number_of_components = 0
+#    for node in adjacency_list:
+#        if not visited[node]:
+#            queue.append(node)
+#            number_of_components += 1
+#            while queue:
+#                current_node = queue.pop(0)
+#                visited[current_node] = True
+#                for adjacent_node in adjacency_list[current_node]:
+#                    if not visited[adjacent_node]:
+#                        queue.append(adjacent_node)
+#
+#    return number_of_components
 
 
 
@@ -70,6 +81,6 @@ l = 1000
 ns = choices(range(1, 1000), k=l)
 ms = choices(range(1, 1000), k=l)
 rs = choices(range(1, 200), k=l)
-nodes = [Node(n, m, r) for n, m, r in zip(ns, ms, rs)]
+nodes = [Node(n, m, r) for n, m, r, in zip(ns, ms, rs)]
 
 print(get_number_of_connections(nodes))

@@ -14,7 +14,7 @@ def get_number_of_connections(nodes):
     for node in nodes:
         adj_list[node] = []
 
-    # posortuj budki względem pierwszej współrzędnej (O(n))
+    # posortuj budki względem pierwszej współrzędnej
     nodes_sorted = sorted(nodes) # (n log(n))
     for i, current_node in enumerate(nodes_sorted):
         # możemy spokojnie patrzeć tylko na 15 kolejnych budek - jeżeli na

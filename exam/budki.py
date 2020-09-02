@@ -5,15 +5,11 @@
 
 from collections import namedtuple
 from random import choices
-from pprint import pprint
 
 Node = namedtuple('Node', ('n', 'm', 'r'))
 
 
 def get_number_of_connections(nodes):
-    # informacja o "najstarszym przodku" każdej budki (początkowo każda
-    # wskazuje na siebie)
-    roots = list(range(len(nodes)))
     adjacency_list = {}
     for node in nodes:
         adjacency_list[node] = []
@@ -33,13 +29,9 @@ def get_number_of_connections(nodes):
         for j, next_node in enumerate(next_nodes):
             # co najwyżej 15 O(n), więc nadal liniowo
             next_node_ix = i + j + 1
-            # pomiń jeżeli mają wspólnego przodka (już są połączone)
-            if roots[next_node_ix] != roots[i]:
-                if calculate_distance(current_node, next_node) < min(next_node.r, current_node.r):
-                    # zapisujemy wiadomość o "najstarszym przodku"
-                    roots[next_node_ix] = roots[i]
-                    # dodajemy sąsiadującą budkę
-                    adjacency_list[current_node].append(next_node)
+            if calculate_distance(current_node, next_node) < min(next_node.r, current_node.r):
+                # dodajemy sąsiadującą budkę
+                adjacency_list[current_node].append(next_node)
 
     return get_number_of_connected_components(adjacency_list) -1
 
